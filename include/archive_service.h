@@ -18,6 +18,20 @@ typedef enum {
     ARCHIVE_ERR_NOT_FOUND
 } ArchiveStatus_t;
 
+// --- ARCHIVE FAULT REGISTRY (For FDIR/Ground Station) ---
+#define FAULT_ARC_FULL           0xAF01
+#define FAULT_ARC_CRC_FAIL       0xAF02
+#define FAULT_ARC_BAD_CMD_LEN    0xAF03
+#define FAULT_ARC_BAD_KEY        0xAF04
+#define FAULT_ARC_UNKNOWN_CMD    0xAF05
+
+
+// --- ARCHIVE RECORD ID REGISTRY ---
+#define REC_ID_HK          0x01  // Housekeeping Telemetry
+#define REC_ID_PAYLOAD     0x02  // Science/Payload Data
+#define REC_ID_FAULT       0x03  // Detailed Fault Logs
+#define REC_ID_EVENT       0x04  // Special events (e.g., Deployments)
+
 /**
  * @brief Internal representation of a stored record.
  * This is the "envelope" that protects the raw data.
@@ -43,4 +57,6 @@ ArchiveStatus_t Archive_ReadRecord(uint16_t index, ArchiveRecord_t *out_record);
 // Returns current memory usage status
 uint16_t Archive_GetUsage(void);
 
+
+void ARCHIVE_ProcessCommand(const uint8_t* payload, uint16_t len);
 #endif
